@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 char *strdup(char const *str)
 {
@@ -386,32 +387,18 @@ inline static void advance(body *bodies, size_t number_of_bodies, double dt)
     }
 }
 
-void print_bodies(body *bodies, size_t number_of_bodies)
+inline static void simulate(body *bodies, size_t number_of_bodies,
+        double number_of_steps, double dt)
 {
-    if (!bodies)
+    printf("Initial energy: %.9lf\n", energy(bodies, number_of_bodies));
+    clock_t start = clock();
+    for (size_t i = 0; i < number_of_steps; ++i)
     {
-        printf("No bodies provide.\n");
+        advance(bodies, number_of_bodies, dt);
     }
-
-    if (number_of_bodies == 1)
-    {
-        printf("System has %ld body:\n", number_of_bodies);
-    }
-    else
-    {
-        printf("System has %ld bodies:\n", number_of_bodies);
-    }
-
-    for (size_t i = 0; i < number_of_bodies; ++i)
-    {
-        body const *b = &bodies[i];
-        printf("%s:\n", b->name);
-        printf("  mass:     %le\n", b->mass);
-        printf("  position: [%le, %le, %le]\n", b->x, b->y, b->z);
-        printf("  velocity: [%le, %le, %le]\n", b->vx, b->vy, b->vz);
-    }
-
-    printf("System Energy: %le\n", energy(bodies, number_of_bodies));
+    clock_t stop = clock();
+    printf("Final energy:   %.9lf\n", energy(bodies, number_of_bodies));
+    printf("Elapsed: %lfs\n", (double)(stop-start)/CLOCKS_PER_SEC);
 }
 
 int main(int argc, char **argv)
@@ -424,8 +411,8 @@ int main(int argc, char **argv)
         return 1;
     }
     char const *filename = argv[1];
-    int const n = atoi(argv[2]);
-    if (n < 1)
+    int const number_of_steps = atoi(argv[2]);
+    if (number_of_steps < 1)
     {
         fprintf(stderr, "error: simulation duration less than 1\n");
         return 2;
@@ -433,21 +420,22 @@ int main(int argc, char **argv)
 
     body *bodies = NULL;
     size_t number_of_bodies = read_bodies(filename, &bodies);
-    if (bodies)
+    if (!bodies)
     {
-        offset_momentum(bodies, number_of_bodies);
-        printf("%.9lf\n", energy(bodies, number_of_bodies));
-        for (size_t i = 0; i < n; ++i)
-        {
-            advance(bodies, number_of_bodies, dt);
-        }
-        printf("%.9lf\n", energy(bodies, number_of_bodies));
-        for (size_t i = 0; i < number_of_bodies; ++i)
-        {
-            body_free(&bodies[i]);
-        }
-        free(bodies);
-        return 0;
+        return -1;
     }
-    return -1;
+
+    offset_momentum(bodies, number_of_bodies);
+
+    simulate(bodies, number_of_bodies, number_of_steps, dt);
+    printf("\n");
+    simulate(bodies, number_of_bodies, number_of_steps, dt);
+
+    for (size_t i = 0; i < number_of_bodies; ++i)
+    {
+        body_free(&bodies[i]);
+    }
+    free(bodies);
+
+    return 0;
 }
