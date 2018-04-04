@@ -36,14 +36,16 @@ If you do not provide the number of stones, 10,000,000 stones will be dropped.
 
 == Results
 
-[source]
+The following results were obtained on an AWS t2.medium instance.
+
+[source,shell]
 ----
+λ sh runall.sh 1000000
 include::output-1000000.txt[]
 ----
 
-[source]
+[source,shell]
 ----
+λ sh runall.sh 100000000
 include::output-100000000.txt[]
 ----
-
-== Conclusions
