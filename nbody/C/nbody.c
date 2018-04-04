@@ -321,7 +321,7 @@ inline static double potential_energy(body const *a, body const *b)
     return -a->mass * b->mass / sqrt(dx*dx + dy*dy + dz*dz);
 }
 
-inline static double energy(body const *bodies, size_t number_of_bodies)
+double energy(body const *bodies, size_t number_of_bodies)
 {
     double e = 0.0;
 
@@ -337,7 +337,7 @@ inline static double energy(body const *bodies, size_t number_of_bodies)
     return e;
 }
 
-inline static void offset_momentum(body *bodies, size_t number_of_bodies)
+void offset_momentum(body *bodies, size_t number_of_bodies)
 {
     double px = 0.0, py = 0.0, pz = 0.0;
     for (body const *b = bodies; b != bodies + number_of_bodies; ++b)
@@ -387,8 +387,8 @@ inline static void advance(body *bodies, size_t number_of_bodies, double dt)
     }
 }
 
-inline static void simulate(body *bodies, size_t number_of_bodies,
-        double number_of_steps, double dt)
+void simulate(body *bodies, size_t number_of_bodies, double number_of_steps,
+        double dt)
 {
     printf("Initial energy: %.9lf\n", energy(bodies, number_of_bodies));
     clock_t start = clock();
