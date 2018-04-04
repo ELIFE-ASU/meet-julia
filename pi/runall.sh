@@ -24,3 +24,9 @@ time python36 pi-numpy.py $trials
 
 echo -e "\nComputing π (vectorized) in Python 3.6:"
 time python36 pi-numpy.py $trials
+
+echo -e "\nComputing π (for-loop) in Julia 0.6.2:"
+time julia pi.jl $trials
+
+echo -e "\nComputing π (vectorized) in Julia 0.6.2:"
+time julia pi-vec.jl $trials
