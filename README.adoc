@@ -1,0 +1,6 @@
+= Meet Julia
+Douglas G. Moore, Harrison Smith, Siyu Zhou
+v0.0, April 2018
+:source-highlighter: prettify
+:stem: latexmath
+
