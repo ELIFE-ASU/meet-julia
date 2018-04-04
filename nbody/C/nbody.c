@@ -376,6 +376,38 @@ inline static void offset_momentum(bodies const *b)
     b->vz[0] = -pz / b->mass[0];
 }
 
+inline static void advance(bodies *b, double dt)
+{
+    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    {
+        for (size_t j = i + 1; j < b->number_of_bodies; ++j)
+        {
+            double const dx = b->x[i] - b->x[j];
+            double const dy = b->y[i] - b->y[j];
+            double const dz = b->z[i] - b->z[j];
+
+            double const r = sqrt(dx*dx + dy*dy + dz*dz);
+
+            double const magnitude = dt / (r * r * r);
+
+            b->vx[i] -= dx * b->mass[j] * magnitude;
+            b->vy[i] -= dy * b->mass[j] * magnitude;
+            b->vz[i] -= dz * b->mass[j] * magnitude;
+
+            b->vx[j] += dx * b->mass[i] * magnitude;
+            b->vy[j] += dy * b->mass[i] * magnitude;
+            b->vz[j] += dz * b->mass[i] * magnitude;
+        }
+    }
+
+    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    {
+        b->x[i] += dt * b->vx[i];
+        b->y[i] += dt * b->vy[i];
+        b->z[i] += dt * b->vz[i];
+    }
+}
+
 void bodies_print(bodies *b)
 {
     if (!b)
@@ -385,11 +417,11 @@ void bodies_print(bodies *b)
 
     if (b->number_of_bodies == 1)
     {
-        printf("System has %d body:\n", b->number_of_bodies);
+        printf("System has %ld body:\n", b->number_of_bodies);
     }
     else
     {
-        printf("System has %d bodies:\n", b->number_of_bodies);
+        printf("System has %ld bodies:\n", b->number_of_bodies);
     }
 
     for (size_t i = 0; i < b->number_of_bodies; ++i)
@@ -403,13 +435,35 @@ void bodies_print(bodies *b)
     printf("System Energy: %le\n", energy(b));
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    double const dt = 0.01;
+
+    if (argc < 2)
+    {
+        fprintf(stderr, "error: no simulation duration provided\n\n");
+        fprintf(stderr, "usage: nbody <time-steps>\n");
+        return 1;
+    }
+    int const n = atoi(argv[1]);
+    if (n < 1)
+    {
+        fprintf(stderr, "error: simulation duration less than 1\n");
+        return 2;
+    }
+
     bodies *b = bodies_read("data.json");
-    offset_momentum(b);
     if (b)
     {
-        bodies_print(b);
+        offset_momentum(b);
+        printf("%.9lf\n", energy(b));
+        for (size_t i = 0; i < n; ++i)
+        {
+            advance(b, dt);
+        }
+        printf("%.9lf\n", energy(b));
+        bodies_free(b);
+        return 0;
     }
-    bodies_free(b);
+    return -1;
 }
