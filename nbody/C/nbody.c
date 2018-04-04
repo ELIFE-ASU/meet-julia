@@ -1,4 +1,5 @@
 #include <json/json.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -329,6 +330,38 @@ bodies *bodies_read(char const *filename)
     return b;
 }
 
+inline static double kinetic_energy(bodies const *b, size_t i)
+{
+    double const vx = b->vx[i];
+    double const vy = b->vy[i];
+    double const vz = b->vz[i];
+    return 0.5 * b->mass[i] * (vx*vx + vy*vy + vz*vz);
+}
+
+inline static double potential_energy(bodies const *b, size_t i, size_t j)
+{
+    double const dx = b->x[i] - b->x[j];
+    double const dy = b->y[i] - b->y[j];
+    double const dz = b->z[i] - b->z[j];
+    return -1.0 * b->mass[i] * b->mass[j] / sqrt(dx*dx + dy*dy + dz*dz);
+}
+
+inline static double energy(bodies const *b)
+{
+    double e = 0.0;
+
+    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    {
+        e += kinetic_energy(b, i);
+        for (size_t j = i + 1; j < b->number_of_bodies; ++j)
+        {
+            e += potential_energy(b, i, j);
+        }
+    }
+
+    return e;
+}
+
 void bodies_print(bodies *b)
 {
     if (!b)
@@ -352,6 +385,8 @@ void bodies_print(bodies *b)
         printf("  position: [%le, %le, %le]\n", b->x[i], b->y[i], b->z[i]);
         printf("  velocity: [%le, %le, %le]\n", b->vx[i], b->vy[i], b->vz[i]);
     }
+
+    printf("System Energy: %le\n", energy(b));
 }
 
 int main()
