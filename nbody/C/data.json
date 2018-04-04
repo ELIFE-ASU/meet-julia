@@ -1,0 +1,8 @@
+{
+    "unitmass": 1e27,
+    "mars": {
+        "mass": 1e-3,
+        "position": [0.0, 0.2, 1.3],
+        "velocity": [0.1, -1.3, 0.6]
+    }
+}
