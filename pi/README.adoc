@@ -1,0 +1,39 @@
+= A Monte-Carlo Estimate of π
+:source-highlighter: prettify
+:stem: latexmath
+
+== Introduction
+
+Suppose we have a square with each side length stem:[1] with a circle of radius
+stem:[\frac{1}{2}] inscribe within it. The area of each is stem:[A_s = 1] and
+stem:[A_c = \frac{\pi}{4}], respectively. If we wish to estimate π, we can do so
+by estimating the area of the circle. To do that, we can note that if we drop a
+stone into the square arena, the probability that it will land inside the circle
+is stem:[P=\frac{A_c}{A_s}=\frac{\pi}{4}]. So, if we drop a large number of
+stones stem:[N] into the arena, count the number of stones that land in the
+circle stem:[N_c] and compute the ratio stem:[P \approx \frac{N_c}{N}], we'll
+get a good estimate of stem:[\pi \approx \frac{4N_c}{N}].
+
+== Methods
+
+We implemented this basic algorithm in five languages: C, {cpp}, Python, R and
+Julia. Each implementation estimates π twice and times how long each computation
+takes. The precise implementation is designed to be both idiomatic and
+performant; we chose the fastest implementation that is reasonable for the given
+language. For example, the python implemntation uses `numpy`.
+
+The driver script `runall.sh` executes each script and prints the results and
+the total run time of each. Note that the total run time of the C and {cpp}
+programs includes the time to compile the executable.
+
+To execute the programs, simply run `runall.sh` with the total number of stones
+you wish to drop:
+[source,shell]
+----
+λ sh runall.sh 1000000
+----
+If you do not provide the number of stones, 10,000,000 stones will be dropped.
+
+== Results
+
+== Conclusions
