@@ -11,53 +11,27 @@ char *strdup(char const *str)
     return dst;
 }
 
-typedef struct bodies
+typedef struct body
 {
-    size_t number_of_bodies;
-    double unitmass;
-    char **name;
-    double *mass;
-    double *x, *y, *z;
-    double *vx, *vy, *vz;
-} bodies;
+    char *name;
+    double mass;
+    double x, y, z;
+    double vx, vy, vz;
+} body;
 
-bodies *bodies_alloc(size_t n)
-{
-    size_t const bytes = sizeof(bodies) + 7*n*sizeof(double) + n*sizeof(char*); 
-    bodies *b = calloc(bytes, sizeof(char));
-    if (b)
-    {
-        b->number_of_bodies = n;
-        b->unitmass = 1.0;
-        b->name = (char**)(b + 1);
-        b->mass = (double*)(b->name + n);
-        b->x = b->mass + n;
-        b->y = b->x + n;
-        b->z = b->y + n;
-        b->vx = b->z + n;
-        b->vy = b->vx + n;
-        b->vz = b->vy + n;
-    }
-    return b;
-}
-
-void bodies_free(bodies *b)
+void body_free(body *b)
 {
     if (b)
     {
-        for (size_t i = 0; i < b->number_of_bodies; ++i)
-        {
-            free(b->name[i]);
-        }
-        free(b);
+        free(b->name);
     }
 }
 
-int bodies_add_mass(bodies *b, struct json_object *json, size_t i)
+int set_mass(body *b, struct json_object *json)
 {
     if (json_object_is_type(json, json_type_double))
     {
-        b->mass[i] = b->unitmass * json_object_get_double(json);
+        b->mass = json_object_get_double(json);
         return 0;
     }
     else
@@ -67,7 +41,7 @@ int bodies_add_mass(bodies *b, struct json_object *json, size_t i)
     }
 }
 
-int bodies_add_position(bodies *b, struct json_object *json, size_t i)
+int set_position(body *b, struct json_object *json)
 {
     if (json_object_is_type(json, json_type_array))
     {
@@ -76,7 +50,7 @@ int bodies_add_position(bodies *b, struct json_object *json, size_t i)
         {
             if (json_object_is_type(position, json_type_double))
             {
-                b->x[i] = json_object_get_double(position);
+                b->x = json_object_get_double(position);
             }
             else
             {
@@ -95,7 +69,7 @@ int bodies_add_position(bodies *b, struct json_object *json, size_t i)
         {
             if (json_object_is_type(position, json_type_double))
             {
-                b->y[i] = json_object_get_double(position);
+                b->y = json_object_get_double(position);
             }
             else
             {
@@ -114,7 +88,7 @@ int bodies_add_position(bodies *b, struct json_object *json, size_t i)
         {
             if (json_object_is_type(position, json_type_double))
             {
-                b->z[i] = json_object_get_double(position);
+                b->z = json_object_get_double(position);
             }
             else
             {
@@ -144,7 +118,7 @@ int bodies_add_position(bodies *b, struct json_object *json, size_t i)
     }
 }
 
-int bodies_add_velocity(bodies *b, struct json_object *json, size_t i)
+int set_velocity(body *b, struct json_object *json)
 {
     if (json_object_is_type(json, json_type_array))
     {
@@ -153,7 +127,7 @@ int bodies_add_velocity(bodies *b, struct json_object *json, size_t i)
         {
             if (json_object_is_type(velocity, json_type_double))
             {
-                b->vx[i] = json_object_get_double(velocity);
+                b->vx = json_object_get_double(velocity);
             }
             else
             {
@@ -172,7 +146,7 @@ int bodies_add_velocity(bodies *b, struct json_object *json, size_t i)
         {
             if (json_object_is_type(velocity, json_type_double))
             {
-                b->vy[i] = json_object_get_double(velocity);
+                b->vy = json_object_get_double(velocity);
             }
             else
             {
@@ -191,7 +165,7 @@ int bodies_add_velocity(bodies *b, struct json_object *json, size_t i)
         {
             if (json_object_is_type(velocity, json_type_double))
             {
-                b->vz[i] = json_object_get_double(velocity);
+                b->vz = json_object_get_double(velocity);
             }
             else
             {
@@ -221,16 +195,16 @@ int bodies_add_velocity(bodies *b, struct json_object *json, size_t i)
     }
 }
 
-int bodies_add(bodies *b, char const *name, struct json_object *json, size_t i)
+int add_body(body *b, char const *name, struct json_object *json)
 {
     int ret = 0;
-    b->name[i] = strdup(name);
+    b->name = strdup(name);
     int mass_seen = 0, position_seen, velocity_seen = 0;
     json_object_object_foreach(json, key, value) {
         if (strcmp(key, "mass") == 0)
         {
             mass_seen = 1;
-            if (bodies_add_mass(b, value, i))
+            if (set_mass(b, value))
             {
                 ret = -1;
             }
@@ -238,7 +212,7 @@ int bodies_add(bodies *b, char const *name, struct json_object *json, size_t i)
         else if (strcmp(key, "position") == 0)
         {
             position_seen = 1;
-            if (bodies_add_position(b, value, i))
+            if (set_position(b, value))
             {
                 ret = -2;
             }
@@ -246,7 +220,7 @@ int bodies_add(bodies *b, char const *name, struct json_object *json, size_t i)
         else if (strcmp(key, "velocity") == 0)
         {
             velocity_seen = 1;
-            if (bodies_add_velocity(b, value, i))
+            if (set_velocity(b, value))
             {
                 ret = -3;
             }
@@ -276,12 +250,12 @@ int bodies_add(bodies *b, char const *name, struct json_object *json, size_t i)
     return ret;
 }
 
-bodies *bodies_read(char const *filename)
+size_t read_bodies(char const *filename, body **b)
 {
     struct json_object *json = json_object_from_file(filename);
     if (!json)
     {
-        exit(1);
+        return -1;
     }
 
     int number_of_bodies = json_object_object_length(json);
@@ -299,170 +273,180 @@ bodies *bodies_read(char const *filename)
             else
             {
                 fprintf(stderr, "unitmass must be a double\n");
-                return NULL;
+                return -1;
             }
         }
     }
 
-    bodies *b = bodies_alloc(number_of_bodies);
-    if (b)
+    body *bodies = calloc(number_of_bodies, sizeof(body));
+    if (bodies)
     {
-        b->unitmass = unitmass;
-
         size_t index = 0;
         json_object_object_foreach(json, key, value)
         {
             if (strcmp(key, "unitmass") != 0)
             {
-                if (bodies_add(b, key, value, index))
+                if (add_body(bodies + index, key, value))
                 {
-                    free(b);
-                    b = NULL;
+                    free(*b);
+                    *b = NULL;
                     break;
                 }
+                bodies[index].mass *= unitmass;
                 index += 1;
             }
         }
+        *b = bodies;
     }
 
     json_object_put(json);
 
-    return b;
+    return number_of_bodies;
 }
 
-inline static double kinetic_energy(bodies const *b, size_t i)
+inline static double kinetic_energy(body const *b)
 {
-    double const vx = b->vx[i];
-    double const vy = b->vy[i];
-    double const vz = b->vz[i];
-    return 0.5 * b->mass[i] * (vx*vx + vy*vy + vz*vz);
+    double const vx = b->vx;
+    double const vy = b->vy;
+    double const vz = b->vz;
+    return 0.5 * b->mass * (vx*vx + vy*vy + vz*vz);
 }
 
-inline static double potential_energy(bodies const *b, size_t i, size_t j)
+inline static double potential_energy(body const *a, body const *b)
 {
-    double const dx = b->x[i] - b->x[j];
-    double const dy = b->y[i] - b->y[j];
-    double const dz = b->z[i] - b->z[j];
-    return -1.0 * b->mass[i] * b->mass[j] / sqrt(dx*dx + dy*dy + dz*dz);
+    double const dx = a->x - b->x;
+    double const dy = a->y - b->y;
+    double const dz = a->z - b->z;
+    return -a->mass * b->mass / sqrt(dx*dx + dy*dy + dz*dz);
 }
 
-inline static double energy(bodies const *b)
+inline static double energy(body const *bodies, size_t number_of_bodies)
 {
     double e = 0.0;
 
-    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    for (size_t i = 0; i < number_of_bodies; ++i)
     {
-        e += kinetic_energy(b, i);
-        for (size_t j = i + 1; j < b->number_of_bodies; ++j)
+        e += kinetic_energy(bodies + i);
+        for (size_t j = i + 1; j < number_of_bodies; ++j)
         {
-            e += potential_energy(b, i, j);
+            e += potential_energy(bodies + i, bodies + j);
         }
     }
 
     return e;
 }
 
-inline static void offset_momentum(bodies const *b)
+inline static void offset_momentum(body *bodies, size_t number_of_bodies)
 {
     double px = 0.0, py = 0.0, pz = 0.0;
-    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    for (body const *b = bodies; b != bodies + number_of_bodies; ++b)
     {
-        px += b->vx[i] * b->mass[i];
-        py += b->vy[i] * b->mass[i];
-        pz += b->vz[i] * b->mass[i];
+        px += b->vx * b->mass;
+        py += b->vy * b->mass;
+        pz += b->vz * b->mass;
     }
-    b->vx[0] = -px / b->mass[0];
-    b->vy[0] = -py / b->mass[0];
-    b->vz[0] = -pz / b->mass[0];
+    bodies[0].vx = -px / bodies[0].mass;
+    bodies[0].vy = -py / bodies[0].mass;
+    bodies[0].vz = -pz / bodies[0].mass;
 }
 
-inline static void advance(bodies *b, double dt)
+inline static void advance(body *bodies, size_t number_of_bodies, double dt)
 {
-    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    for (size_t i = 0; i < number_of_bodies; ++i)
     {
-        for (size_t j = i + 1; j < b->number_of_bodies; ++j)
+        body *a = bodies + i;
+        for (size_t j = i + 1; j < number_of_bodies; ++j)
         {
-            double const dx = b->x[i] - b->x[j];
-            double const dy = b->y[i] - b->y[j];
-            double const dz = b->z[i] - b->z[j];
+            body *b = bodies + j;
+
+            double const dx = a->x - b->x;
+            double const dy = a->y - b->y;
+            double const dz = a->z - b->z;
 
             double const r = sqrt(dx*dx + dy*dy + dz*dz);
 
             double const magnitude = dt / (r * r * r);
 
-            b->vx[i] -= dx * b->mass[j] * magnitude;
-            b->vy[i] -= dy * b->mass[j] * magnitude;
-            b->vz[i] -= dz * b->mass[j] * magnitude;
+            a->vx -= dx * b->mass * magnitude;
+            a->vy -= dy * b->mass * magnitude;
+            a->vz -= dz * b->mass * magnitude;
 
-            b->vx[j] += dx * b->mass[i] * magnitude;
-            b->vy[j] += dy * b->mass[i] * magnitude;
-            b->vz[j] += dz * b->mass[i] * magnitude;
+            b->vx += dx * a->mass * magnitude;
+            b->vy += dy * a->mass * magnitude;
+            b->vz += dz * a->mass * magnitude;
         }
     }
 
-    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    for (size_t i = 0; i < number_of_bodies; ++i)
     {
-        b->x[i] += dt * b->vx[i];
-        b->y[i] += dt * b->vy[i];
-        b->z[i] += dt * b->vz[i];
+        body *a = bodies + i;
+        a->x += dt * a->vx;
+        a->y += dt * a->vy;
+        a->z += dt * a->vz;
     }
 }
 
-void bodies_print(bodies *b)
+void print_bodies(body *bodies, size_t number_of_bodies)
 {
-    if (!b)
+    if (!bodies)
     {
         printf("No bodies provide.\n");
     }
 
-    if (b->number_of_bodies == 1)
+    if (number_of_bodies == 1)
     {
-        printf("System has %ld body:\n", b->number_of_bodies);
+        printf("System has %ld body:\n", number_of_bodies);
     }
     else
     {
-        printf("System has %ld bodies:\n", b->number_of_bodies);
+        printf("System has %ld bodies:\n", number_of_bodies);
     }
 
-    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    for (size_t i = 0; i < number_of_bodies; ++i)
     {
-        printf("%s:\n", b->name[i]);
-        printf("  mass:     %le\n", b->mass[i]);
-        printf("  position: [%le, %le, %le]\n", b->x[i], b->y[i], b->z[i]);
-        printf("  velocity: [%le, %le, %le]\n", b->vx[i], b->vy[i], b->vz[i]);
+        body const *b = &bodies[i];
+        printf("%s:\n", b->name);
+        printf("  mass:     %le\n", b->mass);
+        printf("  position: [%le, %le, %le]\n", b->x, b->y, b->z);
+        printf("  velocity: [%le, %le, %le]\n", b->vx, b->vy, b->vz);
     }
 
-    printf("System Energy: %le\n", energy(b));
+    printf("System Energy: %le\n", energy(bodies, number_of_bodies));
 }
 
 int main(int argc, char **argv)
 {
     double const dt = 0.01;
 
-    if (argc < 2)
+    if (argc < 3)
     {
-        fprintf(stderr, "error: no simulation duration provided\n\n");
-        fprintf(stderr, "usage: nbody <time-steps>\n");
+        fprintf(stderr, "usage: nbody <filename> <time-steps>\n");
         return 1;
     }
-    int const n = atoi(argv[1]);
+    char const *filename = argv[1];
+    int const n = atoi(argv[2]);
     if (n < 1)
     {
         fprintf(stderr, "error: simulation duration less than 1\n");
         return 2;
     }
 
-    bodies *b = bodies_read("data.json");
-    if (b)
+    body *bodies = NULL;
+    size_t number_of_bodies = read_bodies(filename, &bodies);
+    if (bodies)
     {
-        offset_momentum(b);
-        printf("%.9lf\n", energy(b));
+        offset_momentum(bodies, number_of_bodies);
+        printf("%.9lf\n", energy(bodies, number_of_bodies));
         for (size_t i = 0; i < n; ++i)
         {
-            advance(b, dt);
+            advance(bodies, number_of_bodies, dt);
         }
-        printf("%.9lf\n", energy(b));
-        bodies_free(b);
+        printf("%.9lf\n", energy(bodies, number_of_bodies));
+        for (size_t i = 0; i < number_of_bodies; ++i)
+        {
+            body_free(&bodies[i]);
+        }
+        free(bodies);
         return 0;
     }
     return -1;
