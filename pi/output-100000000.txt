@@ -1,0 +1,113 @@
+Computing π in C:
+First Invocation:  2.000000s
+Second Invocation: 2.000000s
+π ≈ 3.141303
+
+real	0m4.050s
+user	0m4.040s
+sys	0m0.000s
+
+Computing π in C++:
+First invocation:  2.85365s
+Second invocation: 2.85624s
+π ≈ 3.14147
+
+real	0m6.116s
+user	0m6.072s
+sys	0m0.032s
+
+Computing π (for-loop) in Python 2.7:
+First invocation:  49.309489011764526s
+First invocation:  49.324047803878784s
+π ≈ 3.1414242
+
+real	1m38.665s
+user	1m38.660s
+sys	0m0.000s
+
+Computing π (for-loop) in Python 3.6:
+First invocation:  50.10436248779297s
+First invocation:  50.16373062133789s
+π ≈ 3.1414242
+
+real	1m40.299s
+user	1m40.292s
+sys	0m0.004s
+
+Computing π (vectorized) in Python 2.7:
+Traceback (most recent call last):
+  File "pi-numpy.py", line 18, in <module>
+    compute_pi(rng, trials)
+  File "pi-numpy.py", line 7, in compute_pi
+    inside = np.sum(np.sum(points**2, 0) <= 1.0)
+  File "/home/ec2-user/.local/lib/python3.6/site-packages/numpy/core/fromnumeric.py", line 1882, in sum
+    out=out, **kwargs)
+  File "/home/ec2-user/.local/lib/python3.6/site-packages/numpy/core/_methods.py", line 32, in _sum
+    return umr_sum(a, axis, dtype, out, keepdims)
+MemoryError
+
+real	0m3.859s
+user	0m2.644s
+sys	0m1.324s
+
+Computing π (vectorized) in Python 3.6:
+Traceback (most recent call last):
+  File "pi-numpy.py", line 18, in <module>
+    compute_pi(rng, trials)
+  File "pi-numpy.py", line 7, in compute_pi
+    inside = np.sum(np.sum(points**2, 0) <= 1.0)
+  File "/home/ec2-user/.local/lib/python3.6/site-packages/numpy/core/fromnumeric.py", line 1882, in sum
+    out=out, **kwargs)
+  File "/home/ec2-user/.local/lib/python3.6/site-packages/numpy/core/_methods.py", line 32, in _sum
+    return umr_sum(a, axis, dtype, out, keepdims)
+MemoryError
+
+real	0m3.907s
+user	0m2.708s
+sys	0m1.272s
+
+Computing π (for-loop) in Julia 0.6.2:
+  0.571384 seconds (5.99 k allocations: 391.026 KiB)
+  0.555080 seconds (6 allocations: 224 bytes)
+π ≈ 3.14160176
+
+real	0m1.793s
+user	0m1.724s
+sys	0m0.128s
+
+Computing π (vectorized) in Julia 0.6.2:
+ERROR: LoadError: OutOfMemoryError()
+Stacktrace:
+ [1] reducedim_initarray(::Array{Float64,2}, ::Int64, ::Float64, ::Type{Float64}) at ./reducedim.jl:73
+ [2] mapreducedim at ./reducedim.jl:242 [inlined]
+ [3] sum at ./reducedim.jl:583 [inlined]
+ [4] sum at ./reducedim.jl:585 [inlined]
+ [5] compute_π(::MersenneTwister, ::Int64) at /home/ec2-user/projects/meet-julia/pi/Julia/pi-vec.jl:3
+ [6] include_from_node1(::String) at ./loading.jl:576
+ [7] include(::String) at ./sysimg.jl:14
+ [8] process_options(::Base.JLOptions) at ./client.jl:305
+ [9] _start() at ./client.jl:371
+while loading /home/ec2-user/projects/meet-julia/pi/Julia/pi-vec.jl, in expression starting on line 237
+
+real	0m3.941s
+user	0m2.640s
+sys	0m1.408s
+
+Computing π (for-loop) in R:
+First invocation:  3.773086 s
+Second invocation: 3.794344 s
+π ≈  3.141453 
+
+real	7m34.143s
+user	7m34.092s
+sys	0m0.024s
+
+Computing π (vectorized) in R:
+Error: cannot allocate vector of size 762.9 Mb
+Execution halted
+Warning message:
+system call failed: Cannot allocate memory 
+
+real	0m10.156s
+user	0m8.340s
+sys	0m1.812s

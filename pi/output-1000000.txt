@@ -1,0 +1,91 @@
+WARNING: no argument provided; using 1000000 trials
+
+Computing π in C:
+First Invocation:  0.020000s
+Second Invocation: 0.020000s
+π ≈ 3.142288
+
+real	0m0.089s
+user	0m0.064s
+sys	0m0.016s
+
+Computing π in C++:
+First invocation:  0.0285162s
+Second invocation: 0.0285391s
+π ≈ 3.14042
+
+real	0m0.478s
+user	0m0.428s
+sys	0m0.036s
+
+Computing π (for-loop) in Python 2.7:
+First invocation:  0.4941537380218506s
+First invocation:  0.49393510818481445s
+π ≈ 3.14222
+
+real	0m1.019s
+user	0m1.008s
+sys	0m0.008s
+
+Computing π (for-loop) in Python 3.6:
+First invocation:  0.49741339683532715s
+First invocation:  0.49763035774230957s
+π ≈ 3.14222
+
+real	0m1.025s
+user	0m1.024s
+sys	0m0.000s
+
+Computing π (vectorized) in Python 2.7:
+First invocation:  0.04704451560974121s
+First invocation:  0.04677009582519531s
+π ≈ 3.142792
+
+real	0m0.222s
+user	0m0.232s
+sys	0m0.100s
+
+Computing π (vectorized) in Python 3.6:
+First invocation:  0.047095537185668945s
+First invocation:  0.04654645919799805s
+π ≈ 3.142792
+
+real	0m0.223s
+user	0m0.200s
+sys	0m0.132s
+
+Computing π (for-loop) in Julia 0.6.2:
+  0.022496 seconds (5.99 k allocations: 391.026 KiB)
+  0.005542 seconds (6 allocations: 224 bytes)
+π ≈ 3.145124
+
+real	0m0.636s
+user	0m0.624s
+sys	0m0.124s
+
+Computing π (vectorized) in Julia 0.6.2:
+  0.874742 seconds (286.33 k allocations: 53.038 MiB, 8.25% gc time)
+  0.178953 seconds (18 allocations: 38.271 MiB, 84.60% gc time)
+π ≈ 3.145112
+
+real	0m1.660s
+user	0m1.628s
+sys	0m0.140s
+
+Computing π (for-loop) in R:
+First invocation:  2.306406 s
+Second invocation: 2.316937 s
+π ≈  3.145204 
+
+real	0m4.704s
+user	0m4.672s
+sys	0m0.024s
+
+Computing π (vectorized) in R:
+First invocation:  0.144243 s
+Second invocation: 0.1507118 s
+π ≈  3.145204 
+
+real	0m0.378s
+user	0m0.320s
+sys	0m0.052s

@@ -36,4 +36,14 @@ If you do not provide the number of stones, 10,000,000 stones will be dropped.
 
 == Results
 
+[source]
+----
+include::output-1000000.txt[]
+----
+
+[source]
+----
+include::output-100000000.txt[]
+----
+
 == Conclusions
