@@ -362,6 +362,20 @@ inline static double energy(bodies const *b)
     return e;
 }
 
+inline static void offset_momentum(bodies const *b)
+{
+    double px = 0.0, py = 0.0, pz = 0.0;
+    for (size_t i = 0; i < b->number_of_bodies; ++i)
+    {
+        px += b->vx[i] * b->mass[i];
+        py += b->vy[i] * b->mass[i];
+        pz += b->vz[i] * b->mass[i];
+    }
+    b->vx[0] = -px / b->mass[0];
+    b->vy[0] = -py / b->mass[0];
+    b->vz[0] = -pz / b->mass[0];
+}
+
 void bodies_print(bodies *b)
 {
     if (!b)
@@ -392,6 +406,7 @@ void bodies_print(bodies *b)
 int main()
 {
     bodies *b = bodies_read("data.json");
+    offset_momentum(b);
     if (b)
     {
         bodies_print(b);
