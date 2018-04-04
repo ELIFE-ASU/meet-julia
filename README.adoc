@@ -4,3 +4,32 @@ v0.0, April 2018
 :source-highlighter: prettify
 :stem: latexmath
 
+Hi, my name is Julia. I can do everything that Python can do, more even, and I
+actually have a personality. I'm a bit jovial in fact.
+
+My favorite animal is the elusive https://github.com/octocat[octocat].
+Unfortunately, Unicode hasn't gotten with the times and added an octocat glyph,
+so I'll have to improvize a bit:
+
+----
+λ julia
+               _
+   _       _ _(_)_     |  A fresh approach to technical computing
+  (_)     | (_) (_)    |  Documentation: https://docs.julialang.org
+   _ _   _| |_  __ _   |  Type "?help" for help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 0.6.2 (2017-12-13 18:08 UTC)
+ _/ |\__'_|_|_|\__'_|  |  Official http://julialang.org/ release
+|__/                   |  x86_64-pc-linux-gnu
+
+julia> 🐙🐱() = println("meow?")
+julia> 🐙🐱()
+meow?
+----
+
+Enough with the silliness. Start digging into the various directories for
+examples of how I do what I do, and comparisons of my work to the likes of C,
+{cpp}, Python and R.
+
+Hopefully, by the end of this, you will be proselyte worshiping at the alter of
+Julia.
