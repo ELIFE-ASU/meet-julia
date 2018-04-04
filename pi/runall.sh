@@ -9,3 +9,6 @@ fi
 
 echo "Computing π in C:"
 time sh pi-c.sh $trials
+
+echo -e "\nComputing π in C++:"
+time sh pi-cpp.sh $trials
