@@ -1,7 +1,7 @@
 #!/bin/env sh
 
 if [[ $# == 0 ]]; then
-    trials=10000000;
+    trials=1000000;
     (>&2 echo -e "WARNING: no argument provided; using $trials trials\n");
 else
     trials=$1;
@@ -12,3 +12,15 @@ time sh pi-c.sh $trials
 
 echo -e "\nComputing π in C++:"
 time sh pi-cpp.sh $trials
+
+echo -e "\nComputing π (for-loop) in Python 2.7:"
+time python36 pi.py $trials
+
+echo -e "\nComputing π (for-loop) in Python 3.6:"
+time python36 pi.py $trials
+
+echo -e "\nComputing π (vectorized) in Python 2.7:"
+time python36 pi-numpy.py $trials
+
+echo -e "\nComputing π (vectorized) in Python 3.6:"
+time python36 pi-numpy.py $trials
