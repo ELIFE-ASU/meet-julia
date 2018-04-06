@@ -425,7 +425,6 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    offset_momentum(bodies, number_of_bodies);
     for (size_t i = 0; i < number_of_bodies; ++i)
     {
         printf("%p\n", &bodies[i]);

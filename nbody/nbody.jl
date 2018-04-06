@@ -31,22 +31,6 @@ function read_bodies(filename)
     bodies
 end
 
-function offset_momentum!(bodies)
-    px, py, pz = 0.0, 0.0, 0.0
-    for b in bodies
-        px += b.mass * b.vx
-        py += b.mass * b.vy
-        pz += b.mass * b.vz
-    end
-    sun_index = findfirst(b -> b.name == "Sun", bodies)
-    if sun_index != length(bodies)
-        b = bodies[sun_index]
-        b.vx = -px / b.mass
-        b.vy = -py / b.mass
-        b.vz = -pz / b.mass
-    end
-end
-
 function energy(bodies)
     E = 0.0
     for i in 1:length(bodies)
@@ -101,7 +85,6 @@ end
 function main(filename, time_steps)
     bodies = read_bodies(filename)
 
-    offset_momentum!(bodies)
     for body in bodies
         println(body)
     end

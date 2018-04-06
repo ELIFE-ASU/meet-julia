@@ -24,19 +24,6 @@ def read_bodies(filename):
                 bodies.append(body)
     return bodies
 
-def offset_momentum(bodies):
-    px, py, pz = 0.0, 0.0, 0.0
-    for b in bodies:
-        px += b.mass * b.vx
-        py += b.mass * b.vy
-        pz += b.mass * b.vz
-
-    sun = next((b for b in bodies if b.name == 'Sun'), None)
-    if sun:
-        sun.vx = -px / sun.mass
-        sun.vy = -py / sun.mass
-        sun.vz = -pz / sun.mass
-
 def kinetic_energy(body):
     return 0.5 * body.mass * (body.vx**2 + body.vy**2 + body.vz**2)
 
@@ -84,7 +71,6 @@ def advance(bodies, dt):
 def main(filename, timesteps):
     bodies = read_bodies(filename)
 
-    offset_momentum(bodies)
     for body in bodies:
         print(body)
 
