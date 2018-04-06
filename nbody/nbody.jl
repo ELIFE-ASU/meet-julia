@@ -9,7 +9,6 @@ mutable struct Body
     vx::Float64
     vy::Float64
     vz::Float64
-    Body() = new("", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 end
 
 function read_bodies(filename)
@@ -23,11 +22,8 @@ function read_bodies(filename)
         end
         for (key, value) in json
             if key != "unitmass"
-                body = Body()
-                body.name = key
-                body.mass = unitmass * value["mass"]
-                body.x, body.y, body.z = value["position"]
-                body.vx, body.vy, body.vz = value["velocity"]
+                body = Body(key, unitmass * value["mass"],
+                            value["position"]..., value["velocity"]...)
                 push!(bodies, body)
             end
         end
@@ -37,8 +33,7 @@ end
 
 function offset_momentum!(bodies)
     px, py, pz = 0.0, 0.0, 0.0
-    for i in 1:length(bodies)
-        b = bodies[i]
+    for b in bodies
         px += b.mass * b.vx
         py += b.mass * b.vy
         pz += b.mass * b.vz
@@ -73,31 +68,33 @@ function potential_energy(a, b)
 end
 
 function advance!(bodies, dt)
-    const N = length(bodies)
-    for i in 1:N
-        for j in (i+1):N
-            dx = bodies[i].x - bodies[j].x
-            dy = bodies[i].y - bodies[j].y
-            dz = bodies[i].z - bodies[j].z
+    for i in 1:length(bodies)
+        a = bodies[i]
+        for j in (i+1):length(bodies)
+            b = bodies[j]
+
+            dx = a.x - b.x
+            dy = a.y - b.y
+            dz = a.z - b.z
             d2 = dx^2 + dy^2 + dz^2
             ds = sqrt(d2)
             magnitude = dt / (d2*d2)
             magnitude *= ds
 
-            bodies[i].vx -= bodies[j].mass * magnitude * dx
-            bodies[i].vy -= bodies[j].mass * magnitude * dy
-            bodies[i].vz -= bodies[j].mass * magnitude * dz
+            a.vx -= b.mass * magnitude * dx
+            a.vy -= b.mass * magnitude * dy
+            a.vz -= b.mass * magnitude * dz
 
-            bodies[j].vx += bodies[i].mass * magnitude * dx
-            bodies[j].vy += bodies[i].mass * magnitude * dy
-            bodies[j].vz += bodies[i].mass * magnitude * dz
+            b.vx += a.mass * magnitude * dx
+            b.vy += a.mass * magnitude * dy
+            b.vz += a.mass * magnitude * dz
         end
     end
 
-    for i in 1:N
-        bodies[i].x += dt * bodies[i].vx
-        bodies[i].y += dt * bodies[i].vy
-        bodies[i].z += dt * bodies[i].vz
+    for b in bodies
+        b.x += dt * b.vx
+        b.y += dt * b.vy
+        b.z += dt * b.vz
     end
 end
 
@@ -105,6 +102,9 @@ function main(filename, time_steps)
     bodies = read_bodies(filename)
 
     offset_momentum!(bodies)
+    for body in bodies
+        println(body)
+    end
 
     @printf "Initial Energy: %.9f\n" energy(bodies)
     duration = @elapsed for _ in 1:time_steps
