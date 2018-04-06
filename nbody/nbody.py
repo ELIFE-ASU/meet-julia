@@ -96,14 +96,6 @@ def main(filename, timesteps):
     print('Final Energy:   {:.9f}'.format(energy(bodies)))
     print('Elapsed: {}s\n'.format(stop-start))
 
-    print('Initial Energy: {:.9f}'.format(energy(bodies)))
-    start = time.time()
-    for i in range(timesteps):
-        advance(bodies, 0.01)
-    stop = time.time()
-    print('Final Energy:   {:.9f}'.format(energy(bodies)))
-    print('Elapsed: {}s'.format(stop-start))
-
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         raise RuntimeError('usage: python nbody.py <json-file> <time-steps>')

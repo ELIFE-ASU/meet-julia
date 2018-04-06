@@ -426,9 +426,11 @@ int main(int argc, char **argv)
     }
 
     offset_momentum(bodies, number_of_bodies);
+    for (size_t i = 0; i < number_of_bodies; ++i)
+    {
+        printf("%p\n", &bodies[i]);
+    }
 
-    simulate(bodies, number_of_bodies, number_of_steps, dt);
-    printf("\n");
     simulate(bodies, number_of_bodies, number_of_steps, dt);
 
     for (size_t i = 0; i < number_of_bodies; ++i)

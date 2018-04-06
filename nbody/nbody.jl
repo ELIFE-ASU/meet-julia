@@ -112,13 +112,6 @@ function main(filename, time_steps)
     end
     @printf "Final Energy:   %.9f\n" energy(bodies)
     @printf "Elapsed: %fs\n\n" duration
-
-    @printf "Initial Energy: %.9f\n" energy(bodies)
-    duration = @elapsed for _ in 1:time_steps
-        advance!(bodies, 0.01)
-    end
-    @printf "Final Energy:   %.9f\n" energy(bodies)
-    @printf "Elapsed: %fs\n" duration
 end
 
 if length(ARGS) < 2
