@@ -8,6 +8,7 @@ elif [[ $# -eq 1 ]]; then
     timesteps=1000000;
     (>&2 echo -e "WARNING: no argument provided; using $timesteps timesteps\n");
 else
+    filename=$1;
     timesteps=$2;
 fi
 

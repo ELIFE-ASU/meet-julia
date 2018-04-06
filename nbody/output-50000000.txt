@@ -1,0 +1,58 @@
+Running n-body simulation in C:
+0x2571670
+0x25716b0
+0x25716f0
+0x2571730
+0x2571770
+Initial energy: -0.169289903
+Final energy:   -0.169286396
+Elapsed: 7.160000s
+
+real	0m7.323s
+user	0m7.304s
+sys	0m0.004s
+
+Running n-body simulation in Python 2.7:
+<__main__.Body object at 0x7fbdacc40310>
+<__main__.Body object at 0x7fbdacc40350>
+<__main__.Body object at 0x7fbdacc40390>
+<__main__.Body object at 0x7fbdacc403d0>
+<__main__.Body object at 0x7fbdacc40410>
+Initial Energy: -0.169289903
+Final Energy:   -0.169286397
+Elapsed: 1341.30712795s
+
+
+real	22m22.291s
+user	22m21.072s
+sys	0m1.204s
+
+Running n-body simulation in Python 3.6:
+<__main__.Body object at 0x7f5981c12048>
+<__main__.Body object at 0x7f5981c12080>
+<__main__.Body object at 0x7f5981c120b8>
+<__main__.Body object at 0x7f5981c120f0>
+<__main__.Body object at 0x7f5981c12128>
+Initial Energy: -0.169289903
+Final Energy:   -0.169286396
+Elapsed: 1251.2770247459412s
+
+
+real	20m51.309s
+user	20m51.292s
+sys	0m0.004s
+
+Running n-body simulation in Julia 0.6.2:
+Body("Neptune", 0.0020336868699246304, 15.379697114850917, -25.919314609987964, 0.17925877295037118, 0.979090732243898, 0.5946989986476762, -0.034755955504078104)
+Body("Saturn", 0.011286326131968767, 8.34336671824458, 4.124798564124305, -0.4035234171143214, -1.0107743461787924, 1.8256623712304119, 0.008415761376584154)
+Body("Sun", 39.47841760435743, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+Body("Jupiter", 0.03769367487038949, 4.841431442464721, -1.1603200440274284, -0.10362204447112311, 0.606326392995832, 2.81198684491626, -0.02521836165988763)
+Body("Uranus", 0.0017237240570597112, 12.894369562139131, -15.111151401698631, -0.22330757889265573, 1.0827910064415354, 0.8687130181696082, -0.010832637401363636)
+Initial Energy: -0.169289903
+Final Energy:   -0.169286398
+Elapsed: 12.506368s
+
+
+real	0m14.095s
+user	0m14.052s
+sys	0m0.148s

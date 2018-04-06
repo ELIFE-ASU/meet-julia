@@ -1,0 +1,37 @@
+= A Simple N-Body Simulation
+:source-highlighter: prettify
+:stem: latexmath
+
+== Introduction
+
+This example compares naive implementations of an stem:[N]-body problem. We use
+a simple Euler integrator method to evolve the position of stem:[N] object
+interacting gravitationally.
+
+== Methods
+
+Each program reads the mass, position and velocity of some number of bodies from
+a JSON file. The provided data file includes 6 bodies:
+[source,json]
+----
+include::nbody.json[]
+----
+We compute the total energy of the system after reading in the initial states.
+The state of the system is then advanced in time steps of stem:[0.01~days]. The
+energy of the system is then recalculated.
+
+== Results
+
+The following results were obtained on an AWS t2.medium instance.
+
+[source,shell]
+----
+λ sh runall.sh nbody.json 1000000
+include::output-1000000.txt[]
+----
+
+[source,shell]
+----
+λ sh runall.sh nbody.json 50000000
+include::output-50000000.txt[]
+----
