@@ -220,7 +220,7 @@ class Deadlock(TwoPlayerGame):
     """
     def __init__(self, R, P):
         """
-        Construct a `Deadlock` game from the last row of the payoff matrix.
+        Construct a `Deadlock` game from the diagonal of the payoff matrix.
 
         .. doctest::
 
@@ -245,3 +245,44 @@ class Deadlock(TwoPlayerGame):
             raise ValueError('invalid payoff matrix; R ≤ 1.0')
 
         super(Deadlock, self).__init__([[R, 0.0], [1.0, P]])
+
+class Harmony(TwoPlayerGame):
+    """
+    The `Harmony` class provides a constrained `TwoPlayerGame` to represent
+    the (strong) Harmony game. The Harmony game is a two-player game
+    characterized by the payoff matrix
+
+    .. math::
+
+        \\begin{pmatrix}
+            1 & S \\\\
+            T & 0 \\\\
+        \\end{pmatrix},
+
+    with :math:`0 < T < S < 1`.
+    """
+    def __init__(self, T, S):
+        """
+        Construct a `Harmony` game from the anti-diagonal of the payoff matrix.
+
+        .. doctest::
+
+            >>> g = Harmony(0.33, 0.66)
+            >>> g.payoff
+            array([[1.  , 0.66],
+                   [0.33, 0.  ]])
+            >>> Harmony(0.66, 0.33)
+            Traceback (most recent call last):
+            ...
+            ValueError: invalid payoff matrix; S ≤ T
+
+        :raise ValueError: if :math:`0 < T < S < 1` is not satisified
+        """
+        if S <= T:
+            raise ValueError('invalid payoff matrix; S ≤ T')
+        elif S >= 1.0:
+            raise ValueError('invalid payoff matrix; S ≥ 1.0')
+        elif T <= 0.0:
+            raise ValueError('invalid payoff matrix; T ≤ 1.0')
+
+        super(Harmony, self).__init__([[1.0, S], [T, 0.0]])

@@ -13,16 +13,19 @@ Playground
 
         .. automethod:: __getitem__
 
-    .. autoclass:: PrisonersDilemma
+    .. autoclass:: Deadlock
         :members: __init__
 
     .. autoclass:: HawkDove
         :members: __init__
 
-    .. autoclass:: StagHunt
+    .. autoclass:: Harmony
         :members: __init__
 
-    .. autoclass:: Deadlock
+    .. autoclass:: PrisonersDilemma
+        :members: __init__
+
+    .. autoclass:: StagHunt
         :members: __init__
 
 Indices and tables
