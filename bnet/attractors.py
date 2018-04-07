@@ -1,6 +1,4 @@
-import os, sys, time
-import numpy as np
-from math import ceil, log10
+import os, sys, time, numpy as np
 
 def encode(state):
     code = 0
@@ -104,17 +102,21 @@ class BNet(object):
 
 def main(wfile, tfile):
     net = BNet(wfile, tfile)
+
     start = time.time()
     attractors = net.attractors()
     stop = time.time()
+    print('First Invocation:  {}s\n'.format(stop - start))
 
-    #  fmt = 'Attractor {:' + str(ceil(log10(len(attractors)))) + 'd}: '
+    start = time.time()
+    attractors = net.attractors()
+    stop = time.time()
     for (i, attractor) in enumerate(attractors):
         sys.stdout.write('Attractor {}: '.format(i))
         for state in attractor:
             sys.stdout.write('{} '.format(state))
         sys.stdout.write('\n')
-    print('Elapsed: {}s'.format(stop - start))
+    print('Second Invocation: {}s\n'.format(stop - start))
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:

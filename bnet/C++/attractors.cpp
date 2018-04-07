@@ -277,12 +277,15 @@ auto main(int argc, char **argv) -> int
     auto attrs = net.attractors();
     auto stop = steady_clock::now();
     auto duration = 1e-9 * duration_cast<nanoseconds>(stop - start).count();
+    std::cout << "First Invocation:  " << duration << "s\n" << std::endl;
 
-    int mag = static_cast<int>(ceil(log10(std::size(attrs))));
+    start = steady_clock::now();
+    attrs = net.attractors();
+    stop = steady_clock::now();
+    duration = 1e-9 * duration_cast<nanoseconds>(stop - start).count();
     for (auto i = 0ull; i < std::size(attrs); ++i)
     {
-        std::cout << "Attractor " << std::setw(mag) << std::right << i << ": ";
-        std::cout << attrs.at(i) << std::endl;
+        std::cout << "Attractor " << i << ": " << attrs.at(i) << std::endl;
     }
-    std::cout << "Elapsed: " << duration << "s" << std::endl;
+    std::cout << "Second Invocation: " << duration << "s" << std::endl;
 }
