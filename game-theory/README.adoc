@@ -1,0 +1,26 @@
+= Reconstructing Playgrounds
+:source-highlighter: prettify
+:stem: latexmath
+
+== Introduction
+
+In evolutionary game theory, players update their strategies in time according
+to their expected payoff in one-on-one competition with a population of
+competitors. In the simplest case, each competitor competes with every other.
+However, this need not be the case. Instead, each competitor might have a
+neighborhood competitors with whom they play their game. We can envision this
+graphically as a graph whose nodes are agents and whose edges represent agents
+who are in competition with one another. I am going to call this graph the
+_playground_.
+
+The questions we wish to address are: if an external observer can only see the
+strategies of the agents over time, can they
+
+. infer the underlying playground?
+. infer the game that the agents are playing?
+
+== Methods
+
+== Results
+
+== Conclusions
