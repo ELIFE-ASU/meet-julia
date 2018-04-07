@@ -73,7 +73,7 @@ class TestGames(TestCase):
         Ensure that the `PrisonersDilemma` class derives from `TwoPlayerGame`.
         """
         self.assertTrue(issubclass(play.PrisonersDilemma, play.TwoPlayerGame))
-        
+
     def test_prisoners_dilemma_invalid(self):
         """
         The strong prisoner's dilemma requires that :math:`1.0 > R > P > 0.0`.
@@ -100,3 +100,36 @@ class TestGames(TestCase):
         """
         g = play.PrisonersDilemma(0.25, 0.75)
         self.assertTrue(np.array_equal(g.payoff, [[0.75,0.0], [1.0,0.25]]))
+
+    def test_hawk_dove_derives(self):
+        """
+        Ensure that the `HawkDove` class derives from `TwoPlayerGame`.
+        """
+        self.assertTrue(issubclass(play.HawkDove, play.TwoPlayerGame))
+
+    def test_hawk_dove_invalid(self):
+        """
+        The strong hawk-dove game requires that :math:`1.0 > P > T > 0.0`.
+        Ensure that an error is raised if this condition does not hold.
+        """
+        with self.assertRaises(ValueError):
+            play.HawkDove(-0.5, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.HawkDove(0.0, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.HawkDove(0.5, 1.0)
+
+        with self.assertRaises(ValueError):
+            play.HawkDove(0.5, 1.5)
+
+        with self.assertRaises(ValueError):
+            play.HawkDove(0.75, 0.25)
+
+    def test_hawk_dove_init(self):
+        """
+        Ensure the HD payoff matrix is properly constructed.
+        """
+        g = play.HawkDove(0.25, 0.75)
+        self.assertTrue(np.array_equal(g.payoff, [[0.0, 1.0], [0.25, 0.75]]))
