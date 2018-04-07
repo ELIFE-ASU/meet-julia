@@ -68,3 +68,35 @@ class TestGames(TestCase):
         with self.assertRaises(IndexError):
             g[-3,0]
 
+    def test_prisoners_dilemma_derives(self):
+        """
+        Ensure that the `PrisonersDilemma` class derives from `TwoPlayerGame`.
+        """
+        self.assertTrue(issubclass(play.PrisonersDilemma, play.TwoPlayerGame))
+        
+    def test_prisoners_dilemma_invalid(self):
+        """
+        The strong prisoner's dilemma requires that :math:`1.0 > R > P > 0.0`.
+        Ensure that an error is raised if this condition does not hold.
+        """
+        with self.assertRaises(ValueError):
+            play.PrisonersDilemma(-0.5, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.PrisonersDilemma(0.0, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.PrisonersDilemma(0.5, 1.0)
+
+        with self.assertRaises(ValueError):
+            play.PrisonersDilemma(0.5, 1.5)
+
+        with self.assertRaises(ValueError):
+            play.PrisonersDilemma(0.75, 0.25)
+
+    def test_prisoners_dilemma_init(self):
+        """
+        Ensure the PD payoff matrix is properly constructed.
+        """
+        g = play.PrisonersDilemma(0.25, 0.75)
+        self.assertTrue(np.array_equal(g.payoff, [[0.75,0.0], [1.0,0.25]]))
