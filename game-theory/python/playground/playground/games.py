@@ -110,3 +110,48 @@ class PrisonersDilemma(TwoPlayerGame):
             raise ValueError('invalid payoff matrix; P ≤ 1.0')
 
         super(PrisonersDilemma, self).__init__([[R, 0.0], [1.0, P]])
+
+class HawkDove(TwoPlayerGame):
+    """
+    The `HawkDove` class provides a constrained `TwoPlayerGame` to represent
+    the (strong) `Hawk-Dove`_. The Hawk-Dove game is a two-player game
+    characterized by the payoff matrix
+
+    .. math::
+
+        \\begin{pmatrix}
+            0 & 1 \\\\
+            T & P \\\\
+        \\end{pmatrix},
+
+    with :math:`0 < T < P < 1`.
+
+    .. _`Hawk-Dove`: https://en.wikipedia.org/wiki/Chicken_(game) 
+    """
+    def __init__(self, T, P):
+        """
+        Construct a `HawkDove` from the last row of the payoff matrix.
+
+        .. doctest::
+
+            >>> g = HawkDove(0.33, 0.66)
+            >>> g.payoff
+            array([[0.  , 1.  ],
+                   [0.33, 0.66]])
+            >>> HawkDove(0.66, 0.33)
+            Traceback (most recent call last):
+            ...
+            ValueError: invalid payoff matrix; P ≤ T
+
+        :param T: the payoff if player one cooperates and player two defects
+        :param P: the payoff if both players defect
+        :raise ValueError: if :math:`0 < T < P < 1` is not satisified
+        """
+        if P <= T:
+            raise ValueError('invalid payoff matrix; P ≤ T')
+        elif P >= 1.0:
+            raise ValueError('invalid payoff matrix; P ≥ 1.0')
+        elif T <= 0.0:
+            raise ValueError('invalid payoff matrix; T ≤ 1.0')
+
+        super(HawkDove, self).__init__([[0.0, 1.0], [T, P]])
