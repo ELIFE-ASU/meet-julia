@@ -4,6 +4,7 @@
 from unittest import TestCase
 
 import playground as play
+import numpy as np
 
 class TestGames(TestCase):
     """
