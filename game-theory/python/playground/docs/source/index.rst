@@ -8,7 +8,10 @@ Playground
 .. automodule:: playground.games
 
     .. autoclass:: TwoPlayerGame
-        :members: __init__
+
+        .. automethod:: __init__
+
+        .. automethod:: __getitem__
 
 Indices and tables
 ==================
