@@ -42,3 +42,24 @@ class TwoPlayerGame(object):
             msg = 'payoff must have shape (2,2); got {}'.format(shape)
             raise ValueError(msg)
 
+    def __getitem__(self, index):
+        """
+        Access the elements of the payoff matrix.
+
+        .. doctest::
+
+            >>> g = TwoPlayerGame([[0,1],[2,3]])
+            >>> g[0,1]
+            1.0
+            >>> g[-1,-2]
+            2.0
+            >>> g[2,1]
+            Traceback (most recent call last):
+            ...
+            IndexError: index 2 is out of bounds for axis 0 with size 2kkk
+
+        :param index: the index at which to access
+        :raises IndexError: if the index is out of range
+        """
+        i, j = index
+        return self.payoff[i,j]
