@@ -5,6 +5,11 @@ Playground
    :maxdepth: 2
    :caption: Contents:
 
+.. automodule:: playground.playground
+
+    .. autoclass:: Playground
+        :members: __init__
+
 .. automodule:: playground.games
 
     .. autoclass:: TwoPlayerGame
