@@ -19,6 +19,9 @@ Playground
     .. autoclass:: HawkDove
         :members: __init__
 
+    .. autoclass:: StagHunt
+        :members: __init__
+
 Indices and tables
 ==================
 

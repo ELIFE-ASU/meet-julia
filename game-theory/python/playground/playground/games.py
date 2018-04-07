@@ -155,3 +155,48 @@ class HawkDove(TwoPlayerGame):
             raise ValueError('invalid payoff matrix; T ≤ 1.0')
 
         super(HawkDove, self).__init__([[0.0, 1.0], [T, P]])
+
+class StagHunt(TwoPlayerGame):
+    """
+    The `StagHunt` class provides a constrained `TwoPlayerGame` to represent
+    the (strong) `Stag Hunt`_. The Stag Hunt game is a two-player game
+    characterized by the payoff matrix
+
+    .. math::
+
+        \\begin{pmatrix}
+            1 & 0 \\\\
+            T & P \\\\
+        \\end{pmatrix},
+
+    with :math:`0 < P < T < 1`.
+
+    .. _`Stag Hunt`: https://en.wikipedia.org/wiki/Stag_hunt
+    """
+    def __init__(self, P, T):
+        """
+        Construct a `StagHunt` from the last row of the payoff matrix.
+
+        .. doctest::
+
+            >>> g = StagHunt(0.33, 0.66)
+            >>> g.payoff
+            array([[1.  , 0.  ],
+                   [0.66, 0.33]])
+            >>> StagHunt(0.66, 0.33)
+            Traceback (most recent call last):
+            ...
+            ValueError: invalid payoff matrix; T ≤ P
+
+        :param P: the payoff if both players defect
+        :param T: the payoff if player one cooperates and player two defects
+        :raise ValueError: if :math:`0 < P < T < 1` is not satisified
+        """
+        if T <= P:
+            raise ValueError('invalid payoff matrix; T ≤ P')
+        elif T >= 1.0:
+            raise ValueError('invalid payoff matrix; T ≥ 1.0')
+        elif P <= 0.0:
+            raise ValueError('invalid payoff matrix; P ≤ 1.0')
+
+        super(StagHunt, self).__init__([[1.0, 0.0], [T, P]])
