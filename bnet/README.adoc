@@ -1,0 +1,32 @@
+= Boolean Network Attractors
+:source-highlighter: prettify
+:stem: latexmath
+
+== Introduction
+
+A common problem in our group is to determin the attractor cycles of a given
+Boolean network. This functionality is currently implemented in `Neet`, but we
+reimplement it here in {cpp}, Python and Julia for comparison's sake.
+
+== Methods
+
+We constructed a weight-threshold Boolean network in each language, and proceed
+to compute the attractor cycles. This process consists of three basic steps:
+
+. Construct the boolean network
+. Compute all state transitions
+. Traverse the state transition graph (or an equivalent representation) to
+identify the attractor cycles.
+
+== Results
+
+The following results were obtained on an AWS t2.medium instance.
+
+[source,shell]
+----
+λ sh runall.sh w20.dat t20.dat
+include::output-20.txt[]
+----
+
+Notice that Julia is faster than C++ in the second invocation! This will hold
+for every subsequent invocation of `attractors`.

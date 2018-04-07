@@ -1,0 +1,49 @@
+Running n-body simulation in C++:
+First Invocation:  0.694199s
+
+Attractor 0: 671443 933402 671411 671258 
+Attractor 1: 671451 671386 
+Attractor 2: 667227 933531 
+Second Invocation: 0.69422s
+
+real	0m2.437s
+user	0m2.352s
+sys	0m0.072s
+
+Running n-body simulation in Python 2.7:
+First Invocation:  23.6323759556s
+
+Attractor 0: 671443 933402 671411 671258 
+Attractor 1: 671451 671386 
+Attractor 2: 667227 933531 
+Second Invocation: 23.6402139664s
+
+
+real	0m47.364s
+user	0m47.332s
+sys	0m0.140s
+
+Running n-body simulation in Python 3.6:
+First Invocation:  22.70728325843811s
+
+Attractor 0: 671443 933402 671411 671258 
+Attractor 1: 671451 671386 
+Attractor 2: 667227 933531 
+Second Invocation: 22.696096420288086s
+
+
+real	0m45.568s
+user	0m45.548s
+sys	0m0.128s
+
+Running n-body simulation in Julia 0.6.2:
+First Invocation:  0.695141685s
+
+Attractor 1: 671443 933402 671411 671258 
+Attractor 2: 671451 671386 
+Attractor 3: 667227 933531 
+Second Invocation: 0.412341193s
+
+real	0m2.283s
+user	0m2.204s
+sys	0m0.188s
