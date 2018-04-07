@@ -13,6 +13,9 @@ Playground
 
         .. automethod:: __getitem__
 
+    .. autoclass:: PrisonersDilemma
+        :members: __init__
+
 Indices and tables
 ==================
 

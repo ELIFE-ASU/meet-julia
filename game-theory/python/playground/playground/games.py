@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2018 ELIFE. All rights reserved.
 # Use of this source code is governed by a MIT
 # license that can be found in the LICENSE file.
@@ -63,3 +64,49 @@ class TwoPlayerGame(object):
         """
         i, j = index
         return self.payoff[i,j]
+
+class PrisonersDilemma(TwoPlayerGame):
+    """
+    The `PrisonersDilemma` class provides a constrained `TwoPlayerGame` to
+    represent the (strong) `Prisoner's Dilemma`_. The Prisoner's Dilemma is a
+    two-player game characterized by the payoff matrix
+
+    .. math::
+
+        \\begin{pmatrix}
+            R & 0 \\\\
+            1 & P \\\\
+        \\end{pmatrix},
+
+    with :math:`0 < P < R < 1`.
+
+    .. _`Prisoner's Dilemma`: https://en.wikipedia.org/wiki/Prisoner%27s_dilemma
+    """
+    def __init__(self, P, R):
+        """
+        Construct a `PrisonersDilemma` from the diagonal elements of the payoff
+        matrix.
+
+        .. doctest::
+
+            >>> g = PrisonersDilemma(0.33, 0.66)
+            >>> g.payoff
+            array([[0.66, 0.  ],
+                   [1.  , 0.33]])
+            >>> PrisonersDilemma(0.66, 0.33)
+            Traceback (most recent call last):
+            ...
+            ValueError: invalid payoff matrix; R ≤ P
+
+        :param P: the payoff if both parties defect
+        :param R: the payoff if both parties cooperate
+        :raise ValueError: if :math:`0 < P < R < 1` is not satisified
+        """
+        if R <= P:
+            raise ValueError('invalid payoff matrix; R ≤ P')
+        elif R >= 1.0:
+            raise ValueError('invalid payoff matrix; R ≥ 1.0')
+        elif P <= 0.0:
+            raise ValueError('invalid payoff matrix; P ≤ 1.0')
+
+        super(PrisonersDilemma, self).__init__([[R, 0.0], [1.0, P]])
