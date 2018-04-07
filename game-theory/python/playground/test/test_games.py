@@ -133,3 +133,36 @@ class TestGames(TestCase):
         """
         g = play.HawkDove(0.25, 0.75)
         self.assertTrue(np.array_equal(g.payoff, [[0.0, 1.0], [0.25, 0.75]]))
+
+    def test_stag_hunt_derives(self):
+        """
+        Ensure that the `StagHunt` class derives from `TwoPlayerGame`.
+        """
+        self.assertTrue(issubclass(play.StagHunt, play.TwoPlayerGame))
+
+    def test_stag_hunt_invalid(self):
+        """
+        The strong stag hunt game requires that :math:`1.0 > T > P > 0.0`.
+        Ensure that an error is raised if this condition does not hold.
+        """
+        with self.assertRaises(ValueError):
+            play.StagHunt(-0.5, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.StagHunt(0.0, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.StagHunt(0.5, 1.0)
+
+        with self.assertRaises(ValueError):
+            play.StagHunt(0.5, 1.5)
+
+        with self.assertRaises(ValueError):
+            play.StagHunt(0.75, 0.25)
+
+    def test_stag_hunt_init(self):
+        """
+        Ensure the SH payoff matrix is properly constructed.
+        """
+        g = play.StagHunt(0.25, 0.75)
+        self.assertTrue(np.array_equal(g.payoff, [[1.0, 0.0], [0.75, 0.25]]))
