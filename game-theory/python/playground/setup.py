@@ -10,6 +10,9 @@ with open("README.rst") as handle:
 with open("LICENSE") as handle:
     LICENSE = handle.read()
 
+with open("requirements.txt") as handle:
+    REQUIRE = [line.strip() for line in handle]
+
 setup(
     name='playground',
     version='0.0.0',
@@ -19,8 +22,8 @@ setup(
     maintainer_email='doug@dglmoore.com',
     url='https://github.com/elife-asu/meet-julia',
     license=LICENSE,
-    requires=[],
-    packages=[],
+    install_requires=REQUIRE,
+    packages=['playground'],
     package_data={},
     test_suite='test',
     platforms=['Windows', 'OS X', 'Linux']
