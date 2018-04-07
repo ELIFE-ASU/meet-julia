@@ -199,3 +199,36 @@ class TestGames(TestCase):
         """
         g = play.Deadlock(0.25, 0.75)
         self.assertTrue(np.array_equal(g.payoff, [[0.25, 0.0], [1.0, 0.75]]))
+
+    def test_harmony_derives(self):
+        """
+        Ensure that the `Harmony` class derives from `TwoPlayerGame`.
+        """
+        self.assertTrue(issubclass(play.Harmony, play.TwoPlayerGame))
+
+    def test_harmony_invalid(self):
+        """
+        The strong harmony game requires that :math:`1.0 > S > T > 0.0`.
+        Ensure that an error is raised if this condition does not hold.
+        """
+        with self.assertRaises(ValueError):
+            play.Harmony(-0.5, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.Harmony(0.0, 0.5)
+
+        with self.assertRaises(ValueError):
+            play.Harmony(0.5, 1.0)
+
+        with self.assertRaises(ValueError):
+            play.Harmony(0.5, 1.5)
+
+        with self.assertRaises(ValueError):
+            play.Harmony(0.75, 0.25)
+
+    def test_harmony_init(self):
+        """
+        Ensure the H payoff matrix is properly constructed.
+        """
+        g = play.Harmony(0.25, 0.75)
+        self.assertTrue(np.array_equal(g.payoff, [[1.0, 0.75], [0.25, 0.0]]))
