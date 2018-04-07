@@ -3,6 +3,8 @@
 # license that can be found in the LICENSE file.
 from unittest import TestCase
 
+import playground as play
+
 class TestCanary(TestCase):
     """
     The `TestCanary` class provides a simple sentinal_ test class to ensure that
