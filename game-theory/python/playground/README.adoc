@@ -1,0 +1,6 @@
+= Playground: A Graph of Game-Playing Agents
+:source-highlighter: prettify
+:stem: latexmath
+
+== Getting Started
+
