@@ -22,7 +22,7 @@ Playground
     .. autoclass:: StagHunt
         :members: __init__
 
-    .. autoclass:: Harmony
+    .. autoclass:: Deadlock
         :members: __init__
 
 Indices and tables

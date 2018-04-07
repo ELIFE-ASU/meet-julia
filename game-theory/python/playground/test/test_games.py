@@ -167,35 +167,35 @@ class TestGames(TestCase):
         g = play.StagHunt(0.25, 0.75)
         self.assertTrue(np.array_equal(g.payoff, [[1.0, 0.0], [0.75, 0.25]]))
 
-    def test_harmony_derives(self):
+    def test_deadlock_derives(self):
         """
-        Ensure that the `Harmony` class derives from `TwoPlayerGame`.
+        Ensure that the `Deadlock` class derives from `TwoPlayerGame`.
         """
-        self.assertTrue(issubclass(play.Harmony, play.TwoPlayerGame))
+        self.assertTrue(issubclass(play.Deadlock, play.TwoPlayerGame))
 
-    def test_harmony_invalid(self):
+    def test_deadlock_invalid(self):
         """
-        The strong harmony game requires that :math:`1.0 > P > R > 0.0`.
+        The strong deadlock game requires that :math:`1.0 > P > R > 0.0`.
         Ensure that an error is raised if this condition does not hold.
         """
         with self.assertRaises(ValueError):
-            play.Harmony(-0.5, 0.5)
+            play.Deadlock(-0.5, 0.5)
 
         with self.assertRaises(ValueError):
-            play.Harmony(0.0, 0.5)
+            play.Deadlock(0.0, 0.5)
 
         with self.assertRaises(ValueError):
-            play.Harmony(0.5, 1.0)
+            play.Deadlock(0.5, 1.0)
 
         with self.assertRaises(ValueError):
-            play.Harmony(0.5, 1.5)
+            play.Deadlock(0.5, 1.5)
 
         with self.assertRaises(ValueError):
-            play.Harmony(0.75, 0.25)
+            play.Deadlock(0.75, 0.25)
 
-    def test_harmony_init(self):
+    def test_deadlock_init(self):
         """
-        Ensure the H payoff matrix is properly constructed.
+        Ensure the D payoff matrix is properly constructed.
         """
-        g = play.Harmony(0.25, 0.75)
+        g = play.Deadlock(0.25, 0.75)
         self.assertTrue(np.array_equal(g.payoff, [[0.25, 0.0], [1.0, 0.75]]))

@@ -201,10 +201,10 @@ class StagHunt(TwoPlayerGame):
 
         super(StagHunt, self).__init__([[1.0, 0.0], [T, P]])
 
-class Harmony(TwoPlayerGame):
+class Deadlock(TwoPlayerGame):
     """
-    The `Harmony` class provides a constrained `TwoPlayerGame` to represent
-    the (strong) `Harmony Game`_. The Harmony game is a two-player game
+    The `Deadlock` class provides a constrained `TwoPlayerGame` to represent
+    the (strong) `Deadlock Game`_. The Deadlock game is a two-player game
     characterized by the payoff matrix
 
     .. math::
@@ -216,19 +216,19 @@ class Harmony(TwoPlayerGame):
 
     with :math:`0 < R < P < 1`.
 
-    .. _`Harmony Game`: https://en.wikipedia.org/wiki/Deadlock_(game_theory)
+    .. _`Deadlock Game`: https://en.wikipedia.org/wiki/Deadlock_(game_theory)
     """
     def __init__(self, R, P):
         """
-        Construct a `Harmony` game from the last row of the payoff matrix.
+        Construct a `Deadlock` game from the last row of the payoff matrix.
 
         .. doctest::
 
-            >>> g = Harmony(0.33, 0.66)
+            >>> g = Deadlock(0.33, 0.66)
             >>> g.payoff
             array([[0.33, 0.  ],
                    [1.  , 0.66]])
-            >>> Harmony(0.66, 0.33)
+            >>> Deadlock(0.66, 0.33)
             Traceback (most recent call last):
             ...
             ValueError: invalid payoff matrix; P ≤ R
@@ -244,4 +244,4 @@ class Harmony(TwoPlayerGame):
         elif R <= 0.0:
             raise ValueError('invalid payoff matrix; R ≤ 1.0')
 
-        super(Harmony, self).__init__([[R, 0.0], [1.0, P]])
+        super(Deadlock, self).__init__([[R, 0.0], [1.0, P]])
