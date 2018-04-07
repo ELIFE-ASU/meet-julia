@@ -4,7 +4,7 @@
 
 from setuptools import setup
 
-with open("README.adoc") as handle:
+with open("README.rst") as handle:
     README = handle.read()
 
 with open("LICENSE") as handle:
