@@ -48,3 +48,23 @@ class TestGames(TestCase):
         payoff = [[0.1, 0.2], [0.3, 0.4]]
         game = play.TwoPlayerGame(payoff)
         self.assertTrue(np.array_equal(payoff, game.payoff))
+
+    def test_two_player_getitem(self):
+        """
+        Ensure that `TwoPlayerGame.__getitem__` correctly accesses the payoff
+        matrix.
+        """
+        g = play.TwoPlayerGame([[0,1],[2,3]])
+        self.assertEqual(g[0,0], 0)
+        self.assertEqual(g[0,1], 1)
+        self.assertEqual(g[1,0], 2)
+        self.assertEqual(g[1,1], 3)
+
+        self.assertEqual(g[-1,-1], 3)
+
+        with self.assertRaises(IndexError):
+            g[2,0]
+
+        with self.assertRaises(IndexError):
+            g[-3,0]
+
