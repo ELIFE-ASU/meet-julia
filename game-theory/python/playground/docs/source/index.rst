@@ -22,6 +22,9 @@ Playground
     .. autoclass:: StagHunt
         :members: __init__
 
+    .. autoclass:: Harmony
+        :members: __init__
+
 Indices and tables
 ==================
 
