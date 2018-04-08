@@ -86,3 +86,27 @@ class TestPlayground(TestCase):
         next_state = np.zeros(len(next_state), dtype=np.int)
         p.update(state, next_state, rng=self.rng)
         self.assertTrue(np.array_equal(next_state, [1,1,1,1]))
+
+    def test_timeseries(self):
+        """
+        Ensure that we can generate a timeseries of strageties.
+        """
+        game = StagHunt(0.25, 0.75)
+        graph = nx.Graph()
+        graph.add_nodes_from(range(4))
+        graph.add_edges_from([(0,1), (0,2), (1,2), (2,3)])
+        rule = lambda p0, p1 : 0.0 if p1 <= p0 else 1.0
+        p = Playground(game, graph, rule)
+
+        series = p.timeseries([0,1,0,1], 4);
+        print(series)
+        expect = [[0,1,0,1], [0,0,1,0], [0,0,0,1], [0,0,0,0], [0,0,0,0]]
+        self.assertTrue(np.array_equal(series, expect))
+
+        series = p.timeseries([1,1,1,1], 2);
+        expect = [[1,1,1,1], [1,1,1,1], [1,1,1,1]]
+        self.assertTrue(np.array_equal(series, expect))
+
+        series = p.timeseries([1,0,1,1], 3);
+        expect = [[1,0,1,1], [0,1,1,1], [1,0,1,1], [0,1,1,1]]
+        self.assertTrue(np.array_equal(series, expect))
