@@ -117,7 +117,6 @@ class Playground(object):
             array([0, 1, 0, 0, 0, 1, 1, 0, 0, 0])
             >>> state
             array([0, 1, 0, 0, 0, 1, 1, 0, 0, 0])
-
         """
         if next_strategies is None:
             next_strategies = np.empty(len(strategies), dtype=np.int)
@@ -136,3 +135,33 @@ class Playground(object):
             next_strategies[i] = (ts[i] <= rule(p[0], p[1]))
 
         return next_strategies
+
+    def timeseries(self, initial, timesteps, rng=None):
+        """
+        Generate a timeseries of strategies.
+
+        .. doctest::
+
+            >>> rng = np.random.RandomState(2018)
+            >>> game = PrisonersDilemma(0.33, 0.66)
+            >>> graph = nx.barabasi_albert_graph(n=10, m=3, seed=2018)
+            >>> rule = lambda p_0, p_1 : 1.0 / (1.0 + exp(p_0 - p_1))
+            >>> p = Playground(game, graph, rule)
+            >>> p.timeseries(np.zeros(10, np.int), 5, rng=rng)
+            array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                   [0, 1, 0, 1, 1, 1, 1, 1, 0, 1],
+                   [0, 0, 0, 1, 1, 0, 1, 1, 1, 1],
+                   [1, 1, 0, 1, 1, 1, 1, 0, 0, 1],
+                   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                   [1, 1, 1, 1, 1, 1, 0, 1, 0, 1]])
+        """
+        if timesteps < 1:
+            raise ValueError('timesteps < 1')
+
+        series = np.empty((timesteps + 1, self.number_of_agents), np.int)
+        series[0,:] = initial[:]
+
+        for i in range(timesteps):
+            self.update(series[i], series[i+1], rng)
+
+        return series

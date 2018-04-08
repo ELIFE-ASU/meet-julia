@@ -15,6 +15,8 @@ Playground
 
         .. automethod:: update
 
+        .. automethod:: timeseries
+
 .. automodule:: playground.games
 
     .. autoclass:: TwoPlayerGame
