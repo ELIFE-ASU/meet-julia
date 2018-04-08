@@ -15,9 +15,9 @@ class Playground(object):
     payoff equal to the sum of the payoffs from each competition. The results
     from each round of competition are used to update each agent's strategy.
     """
-    def __init__(self, game):
+    def __init__(self, game, graph, rule):
         """
-        Construct a `Playground` from a game.
+        Construct a `Playground` from a game, graph and strategy update rule.
 
         .. doctest::
 
@@ -28,7 +28,11 @@ class Playground(object):
 
         :param game: the two-player game
         :type game: `np.ndarray` or `TwoPlayerGame`
+        :param graph: the competition graph
+        :param rule: the strategy update rule
         """
         if not isinstance(game, TwoPlayerGame):
             game = TwoPlayerGame(game)
         self.game = game
+        self.graph = graph
+        self.rule = rule
