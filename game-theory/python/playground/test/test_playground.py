@@ -47,3 +47,8 @@ class TestPlayground(TestCase):
 
         self.assertTrue(np.array_equal(p.payoff([1,1,1,1]),
             [[0.0,0.5], [0.0,0.5], [0.0,0.75], [0.0,0.25]]))
+
+        payoff = np.empty((4,2), dtype=np.float64)
+        p.payoff([0,1,0,1], payoff)
+        self.assertTrue(np.array_equal(payoff,
+            [[0.75,1.25], [1.5,2.], [0.75,1.5], [0.75,1.]]))
