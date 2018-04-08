@@ -6,7 +6,7 @@
 
     from playground import *
     import networkx as nx
-    from math import exp
+    from math import exp, tanh
 """
 from .games import TwoPlayerGame
 
@@ -93,3 +93,46 @@ class Playground(object):
                 payoff[i,:] += game[:,y]
 
         return payoff
+
+    def update(self, strategies, next_strategies=None, rng=None):
+        """
+        Stochastically update the strategies according to the `Playground`'s
+        `rule`. Each agent selects a new strategy based on the strategies of
+        its neighbors at the current time step.
+
+        .. doctest::
+
+            >>> rng = np.random.RandomState(2018)
+            >>> game = StagHunt(0.25, 0.75)
+            >>> graph = nx.barabasi_albert_graph(n=10, m=2, seed=2018)
+            >>> rule = lambda p0, p1 : 0.5 * (1 + tanh(p1 - p0))
+            >>> p = Playground(game, graph, rule)
+            >>> state = p.update(np.zeros(10, np.int), rng=rng)
+            >>> state
+            array([0, 1, 0, 0, 0, 0, 0, 0, 0, 1])
+            >>> state = p.update(state, rng=rng)
+            >>> state
+            array([0, 0, 0, 1, 0, 0, 0, 1, 0, 0])
+            >>> p.update(state, state, rng=rng)
+            array([0, 1, 0, 0, 0, 1, 1, 0, 0, 0])
+            >>> state
+            array([0, 1, 0, 0, 0, 1, 1, 0, 0, 0])
+
+        """
+        if next_strategies is None:
+            next_strategies = np.empty(len(strategies), dtype=np.int)
+        elif strategies.shape != next_strategies.shape:
+            raise ValueError('strategies and next_strategies have different shapes')
+
+        if rng is None:
+            ts = np.random.rand(self.number_of_agents)
+        else:
+            ts = rng.rand(self.number_of_agents)
+
+        payoff = self.payoff(strategies)
+
+        rule = self.rule
+        for i, p in enumerate(payoff):
+            next_strategies[i] = (ts[i] <= rule(p[0], p[1]))
+
+        return next_strategies

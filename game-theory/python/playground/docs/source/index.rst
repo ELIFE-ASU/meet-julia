@@ -13,6 +13,8 @@ Playground
 
         .. automethod:: payoff
 
+        .. automethod:: update
+
 .. automodule:: playground.games
 
     .. autoclass:: TwoPlayerGame
