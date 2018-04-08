@@ -8,7 +8,10 @@ Playground
 .. automodule:: playground.playground
 
     .. autoclass:: Playground
-        :members: __init__
+
+        .. automethod:: __init__
+
+        .. automethod:: payoff
 
 .. automodule:: playground.games
 
