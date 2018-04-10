@@ -1,0 +1,24 @@
+
+Evaluating NetworkX in Python 2.7:
+Betweenness Centrality:  0.0124794887652 (0.0553461551666s/call)
+Average Clustering Coefficient:  0.191803238992 (0.00719647407532s/call)
+
+real	0m0.839s
+user	0m0.816s
+sys	0m0.132s
+
+Evaluating NetworkX in Python 3.6:
+Betweenness Centrality:  0.012511234796949081 (0.05227584838867187s/call)
+Average Clustering Coefficient:  0.19377965282816886 (0.004938960075378418s/call)
+
+real	0m0.716s
+user	0m0.708s
+sys	0m0.116s
+
+Evaluting LightGraphs.jl in Julia 0.6.2:
+Betweenness Centrality:  0.012503813646670789 (0.08166611180000001s/call)
+Average Clustering Coefficient:  0.18861275479517153 (0.007500485700000002s/call)
+
+real	0m2.891s
+user	0m2.808s
+sys	0m0.188s
